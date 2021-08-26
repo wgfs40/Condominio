@@ -1,0 +1,27 @@
+﻿@model Condominio.Web.Models.ResidencialViewModel
+
+@{
+    var CondominiusList = (List<CondominiumViewModel>)ViewBag.CondominiusList;
+}
+
+@using (Html.BeginForm())
+{
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    @Html.HiddenFor(co => co.ResidentialId)
+    <div class="form-group">
+        @Html.LabelFor(c => c.CondominiumId, "Seleccione el condominio")
+        <select asp-for="CondominiumId" asp-items="@(new SelectList(CondominiusList,"CondominiumId","BusinessName"))" class="form-control">
+            <option>Por favor,Selecciona el condominio</option>
+        </select>
+        @Html.ValidationMessageFor(model => model.CondominiumId, "", new { @class = "text-danger" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(c => c.ResidentialName, "Nombre del residencial")
+        @Html.TextBoxFor(c => c.ResidentialName, new { @class = "form-control", placeholder = "Entrar el Telefono del condominio" })
+        @Html.ValidationMessageFor(model => model.ResidentialName, "", new { @class = "text-danger" })
+    </div>
+
+    <br />
+
+    <input type="submit" class="btn btn-primary" value="Enviar" />
+}

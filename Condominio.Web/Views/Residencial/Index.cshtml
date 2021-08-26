@@ -1,0 +1,60 @@
+﻿@model List<Condominio.Web.Models.ResidencialViewModel>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@Html.ActionLink("Crear Nuevo Residencial", "Register", "Residencial", null, new { @class = "btn btn-primary" })
+<br /><br />
+<table class="table table-hover">
+    <tr class="thead-dark">
+        <th scope="col">Id</th>
+        <th scope="col">Condominio</th>
+        <th scope="col">Nombre residencial</th>        
+        <th scope="col"></th>
+    </tr>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td scope="row">@item.ResidentialId</td>
+                <td scope="row">@item.Condominium.BusinessName</td>
+                <td scope="row">@item.ResidentialName</td>                
+                <td scope="row">
+                    @Html.ActionLink("Edit", "Edit", "Residencial", new { id = item.ResidentialId }, new { @class = "btn btn-primary" })
+                    <a href="#" onclick="Delete(@item.ResidentialId)" class="btn btn-danger">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function Delete(id) {
+            if (confirm("Seguro de elimiar el residencial? ")) {
+                RemoveResidencialById(id);
+            }
+        }
+
+        function RemoveResidencialById(id) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("Delete", "Residencial")",
+                data: { id: id }
+            }).done(function (msg) {
+
+                if (msg.success) {
+                    location.reload();
+                } else {
+                    alert("Data message: " + msg.message);
+                }
+            })
+        }
+    </script>
+}

@@ -1,0 +1,63 @@
+﻿@model List<Condominio.Web.Models.CondominiumViewModel>
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+@Html.ActionLink("Crear Nuevo Condominio", "Register", "Condominium", null, new { @class = "btn btn-primary" })
+<br />
+<br />
+<table class="table table-hover">
+    <tr class="thead-dark">
+        <th scope="col">Id</th>
+        <th scope="col">Nombre</th>
+        <th scope="col">Telefono</th>
+        <th scope="col">Correo Electronico</th>
+        <th scope="col"></th>
+    </tr>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td scope="row">@item.CondominiumId</td>
+                <td scope="row">@item.BusinessName</td>
+                <td scope="row">@item.Phone</td>
+                <td scope="row">@item.Email</td>
+                <td scope="row">
+                    @Html.ActionLink("Edit", "Edit", "Condominium", new { id = item.CondominiumId }, new { @class = "btn btn-primary" })
+                    <a href="#" onclick="Delete(@item.CondominiumId)" class="btn btn-danger">
+                        Eliminar
+                    </a>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+@section Scripts {
+    <script>
+        function Delete(id) {
+            if (confirm("Seguro de elimiar el condiminio? ")) {
+                RemoveCondominiunById(id);
+            }
+        }
+
+        function RemoveCondominiunById(id) {
+            $.ajax({
+                method: "POST",
+                url: "@Url.Action("Delete", "Condominium")",
+                data: { id: id }
+            }).done(function (msg) {
+
+                if (msg.success) {
+                    location.reload();
+                } else {
+                    alert("Data message: " + msg.message);
+                }
+            })
+        }
+    </script>
+}
